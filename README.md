@@ -47,7 +47,6 @@ async function main() {
 }
 main()
 ```
-
 ## Classes
 
 <dl>
@@ -70,7 +69,7 @@ main()
         * [.update(installationID, image)](#TidbytDevice+installations+update) ⇒ <code>Promise.&lt;Object&gt;</code>
         * [.delete(installationID)](#TidbytDevice+installations+delete) ⇒ <code>Promise.&lt;Object&gt;</code>
     * [.update(updates)](#TidbytDevice+update) ⇒ [<code>Promise.&lt;TidbytDevice&gt;</code>](#TidbytDevice)
-    * [.push(image, [installationID])](#TidbytDevice+push) ⇒ <code>Promise.&lt;Object&gt;</code>
+    * [.push(image, options)](#TidbytDevice+push) ⇒ <code>Promise.&lt;Object&gt;</code>
 
 <a name="new_TidbytDevice_new"></a>
 
@@ -163,17 +162,24 @@ Available fields:
 
 <a name="TidbytDevice+push"></a>
 
-### tidbytDevice.push(image, [installationID]) ⇒ <code>Promise.&lt;Object&gt;</code>
+### tidbytDevice.push(image, options) ⇒ <code>Promise.&lt;Object&gt;</code>
 Push a new installation to the device.
 
 Throws if not client is intialized.
+
+
+Available options:
+
+`installationID`: Installation ID to create/update
+
+`background`: Whether the installation should not interrupt the rotation
 
 **Kind**: instance method of [<code>TidbytDevice</code>](#TidbytDevice)  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | image | <code>Buffer</code> | Buffer containing the images to push |
-| [installationID] | <code>String</code> | Optional installation ID to create/update |
+| options | <code>Object</code> |  |
 
 <a name="Tidbyt"></a>
 
@@ -187,7 +193,7 @@ Throws if not client is intialized.
     * [.devices](#Tidbyt+devices) : <code>object</code>
         * [.get(deviceId)](#Tidbyt+devices+get) ⇒ [<code>Promise.&lt;TidbytDevice&gt;</code>](#TidbytDevice)
         * [.update(deviceId, updates)](#Tidbyt+devices+update) ⇒ [<code>Promise.&lt;TidbytDevice&gt;</code>](#TidbytDevice)
-        * [.push(deviceId, image, [installationID])](#Tidbyt+devices+push) ⇒ <code>Promise.&lt;Object&gt;</code>
+        * [.push(deviceId, image, [options])](#Tidbyt+devices+push) ⇒ <code>Promise.&lt;Object&gt;</code>
     * [.request(path, method, body, headers, raw, encoding)](#Tidbyt+request) ⇒ <code>Promise.&lt;(Object\|Buffer)&gt;</code>
 
 <a name="new_Tidbyt_new"></a>
@@ -234,7 +240,7 @@ Available options:
 * [.devices](#Tidbyt+devices) : <code>object</code>
     * [.get(deviceId)](#Tidbyt+devices+get) ⇒ [<code>Promise.&lt;TidbytDevice&gt;</code>](#TidbytDevice)
     * [.update(deviceId, updates)](#Tidbyt+devices+update) ⇒ [<code>Promise.&lt;TidbytDevice&gt;</code>](#TidbytDevice)
-    * [.push(deviceId, image, [installationID])](#Tidbyt+devices+push) ⇒ <code>Promise.&lt;Object&gt;</code>
+    * [.push(deviceId, image, [options])](#Tidbyt+devices+push) ⇒ <code>Promise.&lt;Object&gt;</code>
 
 <a name="Tidbyt+devices+get"></a>
 
@@ -269,10 +275,16 @@ Available updates:
 
 <a name="Tidbyt+devices+push"></a>
 
-#### devices.push(deviceId, image, [installationID]) ⇒ <code>Promise.&lt;Object&gt;</code>
+#### devices.push(deviceId, image, [options]) ⇒ <code>Promise.&lt;Object&gt;</code>
 Push a new installation to a device by ID.
 
 Throws if not client is intialized.
+
+Available options:
+
+`installationID`: Installation ID to create/update
+
+`background`: Whether the installation should not interrupt the rotation
 
 **Kind**: instance method of [<code>devices</code>](#Tidbyt+devices)  
 
@@ -280,7 +292,7 @@ Throws if not client is intialized.
 | --- | --- | --- |
 | deviceId | <code>String</code> | The device id |
 | image | <code>Buffer</code> | Buffer containing the images to push |
-| [installationID] | <code>String</code> | Optional installation ID to create/update |
+| [options] | <code>Object</code> | Push options |
 
 <a name="Tidbyt+request"></a>
 

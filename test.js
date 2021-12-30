@@ -20,17 +20,17 @@ async function main() {
     // get the list of installations for this device
     const installations = await device.installations.list()
 
-    for (const { id, appID } of installations) {
-        const {
-            name = 'Custom',
-            description = `Unlike a regular Tidbyt app, this "installation" was pushed to ${displayName} via Tidbyt's API.`,
-        } = apps.get(appID) || {}
+    // for (const { id, appID } of installations) {
+    //     const {
+    //         name = 'Custom',
+    //         description = `Unlike a regular Tidbyt app, this "installation" was pushed to ${displayName} via Tidbyt's API.`,
+    //     } = apps.get(appID) || {}
 
-        console.log(``)
-        console.log(`  ${name} - ${id}`)
-        console.log(`      ${description}`)
+    //     console.log(``)
+    //     console.log(`  ${name} - ${id}`)
+    //     console.log(`      ${description}`)
 
-    }
+    // }
 
     // delete an installation
     try {
@@ -42,22 +42,22 @@ async function main() {
 
     // push a new installation from a local file
     const nyan = await fs.readFile('nyan.webp')
-    await device.push(nyan, 'NyanCat')
+    await device.push(nyan, { installationID: 'NyanCat', background: true })
 
-    // download a webp preview buffer of an installation
-    const preview = await device.installations.preview('NyanCat')
-    // save the preview to a file
-    await fs.writeFile('preview.webp', preview, { encoding: 'base64' })
+    // // download a webp preview buffer of an installation
+    // const preview = await device.installations.preview('NyanCat')
+    // // save the preview to a file
+    // await fs.writeFile('preview.webp', preview, { encoding: 'base64' })
 
-    // update an installation from a local file after some time
-    setTimeout(async () => {
-        console.log('updating nyan cat installation')
-        const updateResults = await device.installations.update('NyanCat', nyan)
-    }, 5000)
+    // // update an installation from a local file after some time
+    // setTimeout(async () => {
+    //     console.log('updating nyan cat installation')
+    //     const updateResults = await device.installations.update('NyanCat', nyan)
+    // }, 5000)
 
-    // update some device settings
-    const updatedDevice = await device.update({ brightness: 10 })
-    console.log(`updated brightness from ${device.brightness}% to ${updatedDevice.brightness}%`)
+    // // update some device settings
+    // const updatedDevice = await device.update({ brightness: 10 })
+    // console.log(`updated brightness from ${device.brightness}% to ${updatedDevice.brightness}%`)
 }
 
 main()

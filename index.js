@@ -74,14 +74,21 @@ class TidbytDevice {
      * 
      * Throws if not client is intialized.
      * 
+     * 
+     * Available options:
+     * 
+     * `installationID`: Installation ID to create/update
+     * 
+     * `background`: Whether the installation should not interrupt the rotation
+     * 
      * @memberof TidbytDevice
      * @param  {Buffer} image - Buffer containing the images to push
-     * @param  {String} [installationID] - Optional installation ID to create/update
+     * @param  {Object} options 
      * @return {Promise<Object>}
      */
-    async push(image, installationID) {
+    async push(image, options) {
         if (!this.tidbyt) throw new Error('TidbytClient is not initialized')
-        return this.tidbyt.devices.push(this.id, image, installationID)
+        return this.tidbyt.devices.push(this.id, image, options)
     }
 
     /**
@@ -116,9 +123,9 @@ class TidbytDevice {
          * @param  {Buffer} image - Buffer containing the images to push
          * @return {Promise<Object>}
          */
-        update: async (installationId, image) => {
-            if (!installationId) throw new Error('Installation ID is required')
-            return this.push(image, installationId)
+        update: async (installationID, image) => {
+            if (!installationID) throw new Error('Installation ID is required')
+            return this.push(image, { installationID })
         },
 
         /**
@@ -132,11 +139,11 @@ class TidbytDevice {
          * @param  {String} installationID - Optional installation ID to create/update
          * @return {Promise<Object>}
          */
-        delete: async(installationId) => {
-            if (!installationId) throw new Error('Installation ID is required')
+        delete: async(installationID) => {
+            if (!installationID) throw new Error('Installation ID is required')
             if (!this.tidbyt) throw new Error('TidbytClient is not initialized')
             return this.tidbyt.request({
-                path: `${this.basePath}/installations/${installationId}`,
+                path: `${this.basePath}/installations/${installationID}`,
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
@@ -153,11 +160,11 @@ class TidbytDevice {
          * @param  {String} installationID - Optional installation ID to create/update
          * @return {Promise<Buffer>}
          */
-        preview: async(installationId) => {
-            if (!installationId) throw new Error('Installation ID is required')
+        preview: async(installationID) => {
+            if (!installationID) throw new Error('Installation ID is required')
             if (!this.tidbyt) throw new Error('TidbytClient is not initialized')
             return this.tidbyt.request({
-                path: `${this.basePath}/installations/${installationId}/preview`,
+                path: `${this.basePath}/installations/${installationID}/preview`,
                 raw: true,
             })
         },
@@ -293,22 +300,31 @@ class Tidbyt {
          * 
          * Throws if not client is intialized.
          * 
+         * Available options:
+         * 
+         * `installationID`: Installation ID to create/update
+         * 
+         * `background`: Whether the installation should not interrupt the rotation
+         *  
          * @async
          * @memberof Tidbyt#devices
          * @instance
          * @param  {String} deviceId - The device id
          * @param  {Buffer} image - Buffer containing the images to push
-         * @param  {String} [installationID] - Optional installation ID to create/update
+         * @param  {Object} [options] - Push options
          * @return {Promise<Object>}
          */
-        push: async(deviceId, image, installationId) => {
+        push: async(deviceId, image, { installationID, background  = {}}) => {
             if (!image) throw new Error('Image is required')
             const encodedImage = image.toString('base64')
             const body = {
                 image: encodedImage,
             }
-            if (installationId) {
-                body.installationID = installationId
+            if (installationID) {
+                body.installationID = installationID
+            }
+            if (typeof background !== 'undefined') {
+                body.background = background;
             }
             return this.request({
                 path: `/devices/${deviceId}/push`,

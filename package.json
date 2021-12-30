@@ -1,10 +1,14 @@
 {
   "name": "tidbyt",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "description": "API Client for Tidbyt devices",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/drudge/node-tidbyt.git"
   },
   "keywords": [
     "tidbyt",
@@ -16,5 +20,7 @@
   "author": "Nicholas Penree <nick@penree.com>",
   "license": "MIT",
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "jsdoc-to-markdown": "^7.1.0"
+  }
 }
